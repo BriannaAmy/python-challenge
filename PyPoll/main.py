@@ -36,9 +36,38 @@ with open(electionDataPath) as csvFile:
         #check for cadidate change
         if row[2] not in candidateNames:
             candidateNames.append(row[2]) #add candidate name to list
-            
-            candidateVotes[] #initialize index to 1?
-
-
+            candidateVotes.append(1) #initialize index to 1
         else:
             #increment candidate votes based on name
+            candidateVotes[candidateNames.index(row[2])] += 1
+
+#display results
+print("\nElection Results\n---------------------------------------")
+print(f"Total Votes: {totVotes}\n---------------------------------------")
+
+#candidate vote percentages
+for name in candidateNames:
+    votePercent = round((candidateVotes[candidateNames.index(name)] / totVotes)*100,3)
+    print(f"{name}: {votePercent}% ({candidateVotes[candidateNames.index(name)]})")
+
+print("---------------------------------------")
+
+#get highest number of votes to find winner
+winner = candidateNames[candidateVotes.index(max(candidateVotes))]
+
+print(f"Winner: {winner}\n---------------------------------------")
+
+#write results in text file under analysis folder
+analysisOutputPath = os.path.join("..", "PyPoll", "analysis", "analysis.txt")
+
+with open(analysisOutputPath, "w") as text:
+
+    text.write("\nElection Results\n---------------------------------------\n")
+    text.write(f"Total Votes: {totVotes}\n---------------------------------------\n")
+
+    for name in candidateNames:
+        votePercent = round((candidateVotes[candidateNames.index(name)] / totVotes)*100,3)
+        text.write(f"{name}: {votePercent}% ({candidateVotes[candidateNames.index(name)]})\n")
+    
+    text.write("---------------------------------------\n")
+    text.write(f"Winner: {winner}\n---------------------------------------")
